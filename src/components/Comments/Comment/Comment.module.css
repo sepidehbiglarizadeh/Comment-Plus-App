@@ -1,0 +1,39 @@
+.comment{
+    display: flex;
+    align-items: center;
+    background-color: var(--color-white);
+    border-radius: 10px;
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.imgWrapper{
+    width: 60px;
+    height: 60px;
+    background-color: var(--color-primary);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 1.5rem;
+}
+
+.imgWrapper img{
+    width: 70%;
+}
+
+.detail{
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.detail div{
+    font-weight: bold;
+}
+
+.detail span{
+    margin-left: 1.5rem;
+    color: #c4c4c4;
+}

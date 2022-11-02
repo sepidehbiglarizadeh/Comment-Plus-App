@@ -1,11 +1,12 @@
-import styles from "./HomePage.module.css"
+import Comment from "../../Comments/Comment/Comment";
+import styles from "./HomePage.module.css";
 
 const HomePage = () => {
-    return ( 
-        <div className={styles.homePage}>
-            This is HomePage
-        </div>
-     );
-}
- 
+  return (
+    <section className={styles.homePage}>
+      <Comment/>
+    </section>
+  );
+};
+
 export default HomePage;
