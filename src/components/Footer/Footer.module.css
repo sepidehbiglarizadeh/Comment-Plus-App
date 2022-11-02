@@ -1,0 +1,7 @@
+.footer{
+    padding: 2rem;
+    border-top: 1px solid var(--color-darkGray);
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+
