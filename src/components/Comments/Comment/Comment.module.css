@@ -3,9 +3,9 @@
     align-items: center;
     background-color: var(--color-white);
     border-radius: 10px;
-    max-width: 700px;
-    margin: 0 auto;
     padding: 2rem;
+    margin-bottom: 1.5rem;
+    width: 100%;
 }
 
 .imgWrapper{
@@ -36,4 +36,10 @@
 .detail span{
     margin-left: 1.5rem;
     color: #c4c4c4;
+}
+
+@media screen and (min-width:700px) {
+    .comment{
+        width: 700px;
+    }
 }

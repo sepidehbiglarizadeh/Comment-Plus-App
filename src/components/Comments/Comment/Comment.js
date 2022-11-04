@@ -8,7 +8,7 @@ const randomAvatar = (items) => {
   return items[Math.floor(Math.random() * items.length)];
 };
 
-const Comment = () => {
+const Comment = ({name,body,email,createdAt}) => {
   return (
     <div className={styles.comment}>
       <div className={styles.imgWrapper}>
@@ -16,10 +16,10 @@ const Comment = () => {
       </div>
       <div className={styles.content}>
         <div className={styles.detail}>
-          <div>Sepideh</div>
-          <span>. 1 hours ago</span>
+          <div>{name}</div>
+          <span>. {createdAt}</span>
         </div>
-        <p>dshfklsdhfklsdhfklsdflksdhflksdhfldshfldlfhdlfhlsd....</p>
+        <p>{body.substr(1,50)} ...</p>
       </div>
     </div>
   );
