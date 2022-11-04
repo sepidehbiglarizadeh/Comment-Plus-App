@@ -1,18 +1,16 @@
 import styles from "./Comment.module.css";
 import male from "../../.././assets/images/male.png";
 import female from "../../.././assets/images/female.png";
+import { Link } from "react-router-dom";
+import getRandomAvatar from "../../../utils/getRandomAvatar";
 
 const avatars = [male, female];
 
-const randomAvatar = (items) => {
-  return items[Math.floor(Math.random() * items.length)];
-};
-
-const Comment = ({name,body,email,createdAt}) => {
+const Comment = ({name,body,email,createdAt,id}) => {
   return (
     <div className={styles.comment}>
       <div className={styles.imgWrapper}>
-        <img src={randomAvatar(avatars)} alt="avatar" />
+        <img src={getRandomAvatar(avatars)} alt="avatar" />
       </div>
       <div className={styles.content}>
         <div className={styles.detail}>
@@ -20,6 +18,7 @@ const Comment = ({name,body,email,createdAt}) => {
           <span>. {createdAt}</span>
         </div>
         <p>{body.substr(1,50)} ...</p>
+        <Link to={`/comment/${id}`} className={styles.fullCmBtn}>Show</Link>
       </div>
     </div>
   );

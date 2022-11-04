@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import getAllCommentsService from "../../../services/getAllCommentsService";
 import { ThreeDots } from "react-loader-spinner";
 import Comment from "../Comment/Comment";
-import styles from "./CommentsList.module.css"
+import styles from "./CommentsList.module.css";
 
 const Commentslist = () => {
   const [comments, setComments] = useState(null);
@@ -35,13 +35,14 @@ const Commentslist = () => {
     );
 
     if (error) {
-      renderValue = <p style={{margin: "0 auto"}}>Fetching Data Failed</p>;
+      renderValue = <p style={{ margin: "0 auto" }}>Fetching Data Failed</p>;
     }
 
     if (comments && !error) {
       renderValue = comments.map((comment) => {
         return (
           <Comment
+            id={comment.id}
             name={comment.name}
             email={comment.email}
             body={comment.body}
