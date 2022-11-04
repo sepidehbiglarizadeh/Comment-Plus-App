@@ -1,18 +1,20 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import getOneCommentService from "../../../services/getOneCommentService";
 import styles from "./FullComment.module.css";
 import { ThreeDots } from "react-loader-spinner";
 import male from "../../../assets/images/male.png";
 import female from "../../../assets/images/female.png";
 import getRandomAvatar from "../../../utils/getRandomAvatar";
+import { FaRegTrashAlt } from "react-icons/fa";
+import deleteCommentService from "../../../services/deleteCommentService";
 
 const avatars = [male, female];
-
 
 const FullCommentPage = () => {
   const [comment, setComment] = useState(null);
   const { id } = useParams();
+  let navigate = useNavigate();
 
   useEffect(() => {
     if (id) {
@@ -21,6 +23,14 @@ const FullCommentPage = () => {
         .catch();
     }
   }, [id]);
+
+  const deleteCommentHandler = async () => {
+    try {
+      await deleteCommentService(id);
+      navigate("/");
+      setComment(null);
+    } catch (error) {}
+  };
 
   const renderFullComment = () => {
     let renderValue = <p>Select a Comment</p>;
@@ -41,20 +51,29 @@ const FullCommentPage = () => {
     }
 
     if (comment) {
-      renderValue=(<div className={styles.comment}>
-        <div className={styles.imgWrapper}>
-          <img src={getRandomAvatar(avatars)} alt="avatar" />
-        </div>
-        <div className={styles.content}>
-          <div className={styles.detail}>
-            <div>{comment.name}</div>
-            <span>. {comment.createdAt}</span>
+      renderValue = (
+        <div className={styles.comment}>
+          <div className={styles.imgWrapper}>
+            <img src={getRandomAvatar(avatars)} alt="avatar" />
           </div>
-          <div className={styles.email}>Email : {comment.email}</div>
-          <p>{comment.body}</p>
-          
+          <div className={styles.content}>
+            <div className={styles.detail}>
+              <div>{comment.name}</div>
+              <span>. {comment.createdAt}</span>
+            </div>
+            <div className={styles.email}>Email : {comment.email}</div>
+            <p>{comment.body}</p>
+            <div className={styles.btnsWrapper}>
+              <button
+                className={styles.deleteBtn}
+                onClick={deleteCommentHandler}
+              >
+                <FaRegTrashAlt />
+              </button>
+            </div>
+          </div>
         </div>
-      </div>);
+      );
     }
 
     return renderValue;
