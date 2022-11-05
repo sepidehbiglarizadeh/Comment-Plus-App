@@ -12,13 +12,14 @@ const Commentslist = () => {
     const getComments = async () => {
       try {
         const { data } = await getAllCommentsService();
-        setComments(data.filter(d=> d.parentId === null));
+        setComments(data.filter((d) => d.parentId === null));
       } catch (error) {
         setError(true);
       }
     };
     getComments();
   }, []);
+
 
   const renderComments = () => {
     let renderValue = (
@@ -42,7 +43,7 @@ const Commentslist = () => {
       renderValue = comments.map((comment) => {
         return (
           <Comment
-          key={comment.id}
+            key={comment.id}
             id={comment.id}
             name={comment.name}
             email={comment.email}

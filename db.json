@@ -25,28 +25,12 @@
       "createdAt": "2 day ago"
     },
     {
-      "id": 4,
-      "parentId": 1,
-      "name": "Ben",
-      "email": "ben@alysha.tv",
-      "body": "non et atque\noccaecati deserunt quas accusantium unde odit nobis qui voluptatem\nquia voluptas consequuntur itaque dolor\net qui rerum deleniti ut occaecati",
-      "createdAt": "2 day ago"
-    },
-    {
       "id": 5,
       "parentId": 1,
       "name": "Cai",
       "email": "cai@althea.biz",
       "body": "harum non quasi et ratione\ntempore iure ex voluptates in ratione\nharum architecto fugit inventore cupiditate\nvoluptates magni quo et",
       "createdAt": "3 day ago"
-    },
-    {
-      "id": 6,
-      "parentId": 4,
-      "name": "Sam",
-      "email": "Presley.Mueller@myrl.com",
-      "body": "doloribus at sed quis culpa deserunt consectetur qui praesentium\naccusamus fugiat dicta\nvoluptatem rerum ut voluptate autem\nvoluptatem repellendus aspernatur dolorem in",
-      "createdAt":"4 day ago"
     }
   ]
 }
