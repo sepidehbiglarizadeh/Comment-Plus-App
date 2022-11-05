@@ -27,7 +27,7 @@ const Navigation = () => {
     <nav className={styles.nav}>
       {items.map((item) => {
         return (
-          <li>
+          <li key={item.to}>
             <NavLink end to={item.to} className={(navData)=>navData.isActive ? "activeLink" : "link"}>{item.name}</NavLink>
           </li>
         );

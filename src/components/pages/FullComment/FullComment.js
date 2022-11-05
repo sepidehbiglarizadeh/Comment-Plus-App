@@ -8,13 +8,27 @@ import female from "../../../assets/images/female.png";
 import getRandomAvatar from "../../../utils/getRandomAvatar";
 import { FaRegTrashAlt } from "react-icons/fa";
 import deleteCommentService from "../../../services/deleteCommentService";
+import getAllCommentsService from "../../../services/getAllCommentsService";
 
 const avatars = [male, female];
 
 const FullCommentPage = () => {
-  const [comment, setComment] = useState(null);
+  const [comment, setComment] = useState([]);
+  const [replies, setReplies] = useState([]);
   const { id } = useParams();
   let navigate = useNavigate();
+
+  useEffect(() => {
+    const getReplies = async () => {
+      try {
+        const { data } = await getAllCommentsService();
+        setReplies(data.filter((d) => d.parentId === parseInt(id)));
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getReplies();
+  }, [comment]);
 
   useEffect(() => {
     if (id) {
@@ -52,36 +66,74 @@ const FullCommentPage = () => {
 
     if (comment) {
       renderValue = (
-        <div className={styles.comment}>
-          <div className={styles.imgWrapper}>
-            <img src={getRandomAvatar(avatars)} alt="avatar" />
-          </div>
-          <div className={styles.content}>
-            <div className={styles.detail}>
-              <div>{comment.name}</div>
-              <span>. {comment.createdAt}</span>
-            </div>
-            <div className={styles.email}>Email : {comment.email}</div>
-            <p>{comment.body}</p>
-            <div className={styles.btnsWrapper}>
-              <button
-                className={styles.deleteBtn}
-                onClick={deleteCommentHandler}
-              >
-                <FaRegTrashAlt />
-              </button>
-            </div>
-          </div>
-        </div>
+        <CommentComponent
+          name={comment.name}
+          createdAt={comment.createdAt}
+          email={comment.email}
+          body={comment.body}
+          deleteCommentHandler={deleteCommentHandler}
+        />
       );
     }
 
     return renderValue;
   };
 
+  const renderReplies = () => {
+    let renderValue;
+    if (replies) {
+      renderValue = replies.map((reply) => {
+        return (
+          <CommentComponent
+            key={reply.id}
+            name={reply.name}
+            createdAt={reply.createdAt}
+            email={reply.email}
+            body={reply.body}
+            deleteCommentHandler={deleteCommentHandler}
+          />
+        );
+      });
+    }
+
+    return renderValue;
+  };
+
   return (
-    <section className={styles.fullComment}>{renderFullComment()}</section>
+    <section className={styles.fullComment}>
+      {renderFullComment()}
+      <div className={styles.replies}>{renderReplies()}</div>
+    </section>
   );
 };
 
 export default FullCommentPage;
+
+const CommentComponent = ({
+  name,
+  body,
+  createdAt,
+  email,
+  deleteCommentHandler,
+}) => {
+  return (
+    <div className={styles.comment}>
+      <div className={styles.imgWrapper}>
+        <img src={getRandomAvatar(avatars)} alt="avatar" />
+      </div>
+      <div className={styles.content}>
+        <div className={styles.detail}>
+          <div>{name}</div>
+          <span>. {createdAt}</span>
+        </div>
+        <div className={styles.email}>Email : {email}</div>
+        <p>{body}</p>
+        <div className={styles.btnsWrapper}>
+          <button className={styles.deleteBtn} onClick={deleteCommentHandler}>
+            <FaRegTrashAlt />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};

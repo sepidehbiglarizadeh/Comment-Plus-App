@@ -5,14 +5,14 @@ import Comment from "../Comment/Comment";
 import styles from "./CommentsList.module.css";
 
 const Commentslist = () => {
-  const [comments, setComments] = useState(null);
+  const [comments, setComments] = useState([]);
   const [error, setError] = useState(false);
 
   useEffect(() => {
     const getComments = async () => {
       try {
         const { data } = await getAllCommentsService();
-        setComments(data);
+        setComments(data.filter(d=> d.parentId === null));
       } catch (error) {
         setError(true);
       }
@@ -42,6 +42,7 @@ const Commentslist = () => {
       renderValue = comments.map((comment) => {
         return (
           <Comment
+          key={comment.id}
             id={comment.id}
             name={comment.name}
             email={comment.email}
