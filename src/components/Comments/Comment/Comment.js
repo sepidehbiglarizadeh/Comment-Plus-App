@@ -18,7 +18,7 @@ const Comment = ({name,body,email,createdAt,id}) => {
           <div>{name}</div>
           <span>. {moment(createdAt).fromNow()}</span>
         </div>
-        <p>{body.substr(1,50)} ...</p>
+        <p>{body.substr(0,50)} ...</p>
         <Link to={`/comment/${id}`} className={styles.fullCmBtn}>Show</Link>
       </div>
     </div>

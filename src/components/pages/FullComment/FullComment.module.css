@@ -74,24 +74,31 @@
   margin-bottom: 2rem;
 }
 
-.btnsWrapper{
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 2rem;
+.btnsWrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 2rem;
 }
 
-.deleteBtn{
-    background-color: transparent;
-    color: #be123c;
-    border: none;
-    outline: none;
-    font-size: 2rem;
-    padding: 0.5rem;
-    cursor: pointer;
+.btnsWrapper button {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  font-size: 2rem;
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+.deleteBtn {
+  color: #be123c;
+}
+
+.editBtn{
+  color: var(--color-primary);
 }
 
 @media screen and (min-width: 700px) {
-  .replies{
+  .replies {
     margin-left: 6rem;
   }
   .comment {

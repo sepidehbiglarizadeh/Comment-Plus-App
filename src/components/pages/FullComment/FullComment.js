@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import getOneCommentService from "../../../services/getOneCommentService";
 import styles from "./FullComment.module.css";
 import { ThreeDots } from "react-loader-spinner";
 import male from "../../../assets/images/male.png";
 import female from "../../../assets/images/female.png";
 import getRandomAvatar from "../../../utils/getRandomAvatar";
-import { FaRegTrashAlt } from "react-icons/fa";
+import { FaRegTrashAlt, FaRegEdit } from "react-icons/fa";
 import deleteCommentService from "../../../services/deleteCommentService";
 import getAllCommentsService from "../../../services/getAllCommentsService";
 import moment from "moment";
@@ -16,6 +16,7 @@ const avatars = [male, female];
 const FullCommentPage = () => {
   const [comment, setComment] = useState([]);
   const [replies, setReplies] = useState([]);
+  
   const { id } = useParams();
   let navigate = useNavigate();
 
@@ -68,10 +69,7 @@ const FullCommentPage = () => {
     if (comment) {
       renderValue = (
         <CommentComponent
-          name={comment.name}
-          createdAt={comment.createdAt}
-          email={comment.email}
-          body={comment.body}
+          comment={comment}
           deleteCommentHandler={deleteCommentHandler}
         />
       );
@@ -87,10 +85,7 @@ const FullCommentPage = () => {
         return (
           <CommentComponent
             key={reply.id}
-            name={reply.name}
-            createdAt={reply.createdAt}
-            email={reply.email}
-            body={reply.body}
+            comment={reply}
             deleteCommentHandler={deleteCommentHandler}
           />
         );
@@ -110,13 +105,7 @@ const FullCommentPage = () => {
 
 export default FullCommentPage;
 
-const CommentComponent = ({
-  name,
-  body,
-  createdAt,
-  email,
-  deleteCommentHandler,
-}) => {
+const CommentComponent = ({ comment, deleteCommentHandler }) => {
   return (
     <div className={styles.comment}>
       <div className={styles.imgWrapper}>
@@ -124,12 +113,17 @@ const CommentComponent = ({
       </div>
       <div className={styles.content}>
         <div className={styles.detail}>
-          <div>{name}</div>
-          <span>. {moment(createdAt).fromNow()}</span>
+          <div>{comment.name}</div>
+          <span>. {moment(comment.createdAt).fromNow()}</span>
         </div>
-        <div className={styles.email}>Email : {email}</div>
-        <p>{body}</p>
+        <div className={styles.email}>Email : {comment.email}</div>
+        <p>{comment.body}</p>
         <div className={styles.btnsWrapper}>
+          <Link to="/new-comment" state={comment}>
+            <button className={styles.editBtn} >
+              <FaRegEdit />
+            </button>
+          </Link>
           <button className={styles.deleteBtn} onClick={deleteCommentHandler}>
             <FaRegTrashAlt />
           </button>
