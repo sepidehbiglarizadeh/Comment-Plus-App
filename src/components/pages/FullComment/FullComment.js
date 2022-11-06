@@ -6,31 +6,35 @@ import { ThreeDots } from "react-loader-spinner";
 import male from "../../../assets/images/male.png";
 import female from "../../../assets/images/female.png";
 import getRandomAvatar from "../../../utils/getRandomAvatar";
-import { FaRegTrashAlt, FaRegEdit } from "react-icons/fa";
+import { FaRegTrashAlt, FaRegEdit, FaRegCommentDots } from "react-icons/fa";
 import deleteCommentService from "../../../services/deleteCommentService";
 import getAllCommentsService from "../../../services/getAllCommentsService";
 import moment from "moment";
+import ReplyForm from "../../ReplyForm/ReplyForm";
 
 const avatars = [male, female];
 
 const FullCommentPage = () => {
   const [comment, setComment] = useState([]);
   const [replies, setReplies] = useState([]);
-  
+  const [isShow, setIsShow] = useState(false);
+  const [showComponent, setShowComponent] = useState(null);
+
   const { id } = useParams();
   let navigate = useNavigate();
 
+  const getReplies = async () => {
+    try {
+      const { data } = await getAllCommentsService();
+      setReplies(data.filter((d) => d.parentId === parseInt(id)));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
-    const getReplies = async () => {
-      try {
-        const { data } = await getAllCommentsService();
-        setReplies(data.filter((d) => d.parentId === parseInt(id)));
-      } catch (error) {
-        console.log(error);
-      }
-    };
     getReplies();
-  }, [comment]);
+  }, []);
 
   useEffect(() => {
     if (id) {
@@ -40,11 +44,14 @@ const FullCommentPage = () => {
     }
   }, [id]);
 
-  const deleteCommentHandler = async () => {
+  const deleteCommentHandler = async (commentId) => {
     try {
-      await deleteCommentService(id);
-      navigate("/");
-      setComment(null);
+      await deleteCommentService(commentId);
+      getReplies();
+      if (commentId === parseInt(id)) {
+        setComment(null);
+        navigate("/");
+      }
     } catch (error) {}
   };
 
@@ -68,10 +75,24 @@ const FullCommentPage = () => {
 
     if (comment) {
       renderValue = (
-        <CommentComponent
-          comment={comment}
-          deleteCommentHandler={deleteCommentHandler}
-        />
+        <>
+          <CommentComponent
+            comment={comment}
+            deleteCommentHandler={deleteCommentHandler}
+            setIsShow={setIsShow}
+            isShow={isShow}
+            setShowComponent={setShowComponent}
+          />
+          {showComponent === comment.id ? (
+            <ReplyForm
+              setShowComponent={setShowComponent}
+              id={comment.id}
+              setReplies={setReplies}
+            />
+          ) : (
+            ""
+          )}
+        </>
       );
     }
 
@@ -83,11 +104,26 @@ const FullCommentPage = () => {
     if (replies) {
       renderValue = replies.map((reply) => {
         return (
-          <CommentComponent
-            key={reply.id}
-            comment={reply}
-            deleteCommentHandler={deleteCommentHandler}
-          />
+          <>
+            <CommentComponent
+              key={reply.id}
+              comment={reply}
+              deleteCommentHandler={deleteCommentHandler}
+              setIsShow={setIsShow}
+              isShow={isShow}
+              setShowComponent={setShowComponent}
+            />
+            {showComponent === reply.id ? (
+              <ReplyForm
+                setShowComponent={setShowComponent}
+                showComponent={showComponent}
+                id={reply.id}
+                setReplies={setReplies}
+              />
+            ) : (
+              ""
+            )}
+          </>
         );
       });
     }
@@ -97,7 +133,7 @@ const FullCommentPage = () => {
 
   return (
     <section className={styles.fullComment}>
-      {renderFullComment()}
+      <div>{renderFullComment()}</div>
       <div className={styles.replies}>{renderReplies()}</div>
     </section>
   );
@@ -105,7 +141,11 @@ const FullCommentPage = () => {
 
 export default FullCommentPage;
 
-const CommentComponent = ({ comment, deleteCommentHandler }) => {
+const CommentComponent = ({
+  comment,
+  deleteCommentHandler,
+  setShowComponent,
+}) => {
   return (
     <div className={styles.comment}>
       <div className={styles.imgWrapper}>
@@ -119,12 +159,18 @@ const CommentComponent = ({ comment, deleteCommentHandler }) => {
         <div className={styles.email}>Email : {comment.email}</div>
         <p>{comment.body}</p>
         <div className={styles.btnsWrapper}>
+          <button onClick={() => setShowComponent(comment.id)}>
+            <FaRegCommentDots />
+          </button>
           <Link to="/new-comment" state={comment}>
-            <button className={styles.editBtn} >
+            <button className={styles.editBtn}>
               <FaRegEdit />
             </button>
           </Link>
-          <button className={styles.deleteBtn} onClick={deleteCommentHandler}>
+          <button
+            className={styles.deleteBtn}
+            onClick={() => deleteCommentHandler(comment.id)}
+          >
             <FaRegTrashAlt />
           </button>
         </div>
