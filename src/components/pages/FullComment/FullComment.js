@@ -9,6 +9,7 @@ import getRandomAvatar from "../../../utils/getRandomAvatar";
 import { FaRegTrashAlt } from "react-icons/fa";
 import deleteCommentService from "../../../services/deleteCommentService";
 import getAllCommentsService from "../../../services/getAllCommentsService";
+import moment from "moment";
 
 const avatars = [male, female];
 
@@ -124,7 +125,7 @@ const CommentComponent = ({
       <div className={styles.content}>
         <div className={styles.detail}>
           <div>{name}</div>
-          <span>. {createdAt}</span>
+          <span>. {moment(createdAt).fromNow()}</span>
         </div>
         <div className={styles.email}>Email : {email}</div>
         <p>{body}</p>

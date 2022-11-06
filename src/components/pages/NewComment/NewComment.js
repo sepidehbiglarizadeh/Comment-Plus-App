@@ -21,7 +21,7 @@ const NewCommentPage = () => {
     try {
       await addNewCommentService({
         ...comment,
-        createdAt: "1 min ago",
+        createdAt: new Date(),
         parentId: null,
       });
       navigate("/");

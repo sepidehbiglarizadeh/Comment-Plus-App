@@ -3,6 +3,7 @@ import male from "../../.././assets/images/male.png";
 import female from "../../.././assets/images/female.png";
 import { Link } from "react-router-dom";
 import getRandomAvatar from "../../../utils/getRandomAvatar";
+import moment from "moment";
 
 const avatars = [male, female];
 
@@ -15,7 +16,7 @@ const Comment = ({name,body,email,createdAt,id}) => {
       <div className={styles.content}>
         <div className={styles.detail}>
           <div>{name}</div>
-          <span>. {createdAt}</span>
+          <span>. {moment(createdAt).fromNow()}</span>
         </div>
         <p>{body.substr(1,50)} ...</p>
         <Link to={`/comment/${id}`} className={styles.fullCmBtn}>Show</Link>
