@@ -4,14 +4,12 @@ import addNewCommentService from "../../services/addNewCommentService";
 import getAllCommentsService from "../../services/getAllCommentsService";
 import styles from "./ReplyForm.module.css";
 
-const ReplyForm = ({ setShowComponent, id ,setReplies}) => {
+const ReplyForm = ({ setSelectedCommentId, replyId, setComments }) => {
   const [reply, setReply] = useState({
     name: "",
     email: "",
     body: "",
   });
-
-  console.log(id);
 
   const changeHandler = (e) => {
     setReply({ ...reply, [e.target.name]: e.target.value });
@@ -21,18 +19,18 @@ const ReplyForm = ({ setShowComponent, id ,setReplies}) => {
     e.preventDefault();
     try {
       await addNewCommentService({
+        parentId: replyId,
         ...reply,
-        parentId: id,
         createdAt: new Date(),
       });
+      const { data } = await getAllCommentsService();
+      setComments(data);
+      setSelectedCommentId(null);
       setReply({
         name: "",
         email: "",
         body: "",
       });
-     const{data}=await getAllCommentsService();
-     setReplies(data.filter((d) => d.parentId === parseInt(id)));
-      setShowComponent(null);
     } catch (error) {}
   };
 
@@ -57,7 +55,7 @@ const ReplyForm = ({ setShowComponent, id ,setReplies}) => {
         </div>
         <button
           className={styles.closeBtn}
-          onClick={() => setShowComponent(null)}
+          onClick={() => setSelectedCommentId(null)}
         >
           <FaTimes />
         </button>

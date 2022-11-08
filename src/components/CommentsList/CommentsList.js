@@ -1,18 +1,21 @@
 import { useEffect, useState } from "react";
-import getAllCommentsService from "../../../services/getAllCommentsService";
+import getAllCommentsService from "../../services/getAllCommentsService";
 import { ThreeDots } from "react-loader-spinner";
+import styles from "../CommentsList/CommentsList.module.css";
+import deleteCommentService from "../../services/deleteCommentService";
 import Comment from "../Comment/Comment";
-import styles from "./CommentsList.module.css";
 
 const Commentslist = () => {
   const [comments, setComments] = useState([]);
   const [error, setError] = useState(false);
+  const rootComments = comments.filter((comment) => comment.parentId === null);
+  const [selectedCommentId, setSelectedCommentId] = useState(null);
 
   useEffect(() => {
     const getComments = async () => {
       try {
         const { data } = await getAllCommentsService();
-        setComments(data.filter((d) => d.parentId === null));
+        setComments(data);
       } catch (error) {
         setError(true);
       }
@@ -20,6 +23,17 @@ const Commentslist = () => {
     getComments();
   }, []);
 
+  const getReplies = (commentId) => {
+    return comments.filter((c) => c.parentId === commentId);
+  };
+
+  const deleteCommentHandler = async (commentId) => {
+    try {
+      await deleteCommentService(commentId);
+      const { data } = await getAllCommentsService();
+      setComments(data);
+    } catch (error) {}
+  };
 
   const renderComments = () => {
     let renderValue = (
@@ -40,15 +54,18 @@ const Commentslist = () => {
     }
 
     if (comments && !error) {
-      renderValue = comments.map((comment) => {
+      renderValue = rootComments.map((comment) => {
         return (
           <Comment
             key={comment.id}
-            id={comment.id}
-            name={comment.name}
-            email={comment.email}
-            body={comment.body}
-            createdAt={comment.createdAt}
+            comment={comment}
+            deleteCommentHandler={deleteCommentHandler}
+            replies={getReplies(comment.id)}
+            style={styles.comment}
+            setComments={setComments}
+            selectedCommentId={selectedCommentId}
+            setSelectedCommentId={setSelectedCommentId}
+            comments={comments}
           />
         );
       });

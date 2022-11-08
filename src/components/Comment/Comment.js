@@ -1,22 +1,29 @@
 import { FaRegTrashAlt, FaRegEdit, FaRegCommentDots } from "react-icons/fa";
-import styles from "./CommentComponent.module.css";
-import male from "./../../assets/images/male.png";
-import female from "./../../assets/images/female.png";
+import styles from "./Comment.module.css";
+import male from "../../assets/images/male.png";
+import female from "../../assets/images/female.png";
 import moment from "moment";
 import { Link } from "react-router-dom";
-import getRandomAvatar from "./../../utils/getRandomAvatar";
+import getRandomAvatar from "../../utils/getRandomAvatar";
+import ReplyForm from "../ReplyForm/ReplyForm";
 
 const avatars = [male, female];
 
-const CommentComponent = ({
+const Comment = ({
   comment,
   deleteCommentHandler,
   replies,
-  style,
+  setComments,
+  selectedCommentId,
+  setSelectedCommentId,
+  addReplyHandler,
+  parentId = null,
 }) => {
+  const replyId = parentId ? parentId : comment.id;
+
   return (
     <>
-      <div className={style}>
+      <div className={styles.comment}>
         <div className={styles.imgWrapper}>
           <img src={getRandomAvatar(avatars)} alt="avatar" />
         </div>
@@ -28,7 +35,7 @@ const CommentComponent = ({
           <div className={styles.email}>Email : {comment.email}</div>
           <p>{comment.body}</p>
           <div className={styles.btnsWrapper}>
-            <button>
+            <button onClick={() => setSelectedCommentId(comment.id)}>
               <FaRegCommentDots />
             </button>
             <Link to="/new-comment" state={comment}>
@@ -45,21 +52,35 @@ const CommentComponent = ({
           </div>
         </div>
       </div>
-      {replies.length > 0
-        ? replies.map((reply) => {
+      {selectedCommentId === comment.id && (
+        <ReplyForm
+          setSelectedCommentId={setSelectedCommentId}
+          replyId={replyId}
+          setComments={setComments}
+          addReplyHandler={addReplyHandler}
+        />
+      )}
+      {replies.length > 0 && (
+        <div className={styles.reply}>
+          {replies.map((reply) => {
             return (
-              <CommentComponent
+              <Comment
                 key={reply.id}
                 comment={reply}
                 deleteCommentHandler={deleteCommentHandler}
                 replies={[]}
-                style={styles.reply}
+                selectedCommentId={selectedCommentId}
+                setSelectedCommentId={setSelectedCommentId}
+                addReplyHandler={addReplyHandler}
+                setComments={setComments}
+                parentId={comment.id}
               />
             );
-          })
-        : ""}
+          })}
+        </div>
+      )}
     </>
   );
 };
 
-export default CommentComponent;
+export default Comment;

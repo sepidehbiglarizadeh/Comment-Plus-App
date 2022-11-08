@@ -1,4 +1,4 @@
-import Commentslist from "../../Comments/CommentsList/CommentsList";
+import Commentslist from "../../CommentsList/CommentsList";
 import styles from "./HomePage.module.css";
 
 const HomePage = () => {
