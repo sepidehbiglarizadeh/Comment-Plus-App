@@ -1,49 +1,52 @@
-.replyForm{
-    background-color: var(--color-white);
-    padding: 1rem;
-    border-radius: 10px;
-    margin-bottom: 2rem;
+.replyForm {
+  background-color: var(--color-white);
+  padding: 1rem;
+  border-radius: 10px;
+  margin-bottom: 2rem;
+  width: 100%;
 }
 
-.replyForm input ,.replyForm textarea{
-    padding: 1rem;
-    border: 1px solid #ccc;
-    outline: none;
-    border-radius: 10px;
+.replyForm input,
+.replyForm textarea {
+  padding: 1rem;
+  border: 1px solid #ccc;
+  outline: none;
+  border-radius: 10px;
 }
-.replyForm input{
-    margin-right: 2rem;
-}
-
-.closeBtn{background-color: transparent;
-border: none;
-outline: none;
-cursor: pointer;
-font-size: 2rem;
+.replyForm input {
+  margin-right: 2rem;
 }
 
-.details{
-    display: flex;
-    justify-content: space-between;
+.closeBtn {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-size: 2rem;
 }
 
-.content{
-    display: flex;
-    align-items: center;
-    margin-top: 1.5rem;
+.details {
+  display: flex;
+  justify-content: space-between;
 }
 
-.replyForm textarea{
-    resize: none;
-    width: 85%;
+.content {
+  display: flex;
+  align-items: center;
+  margin-top: 1.5rem;
 }
 
-.sendBtn{
-    background-color: transparent;
-    color: var(--color-primary);
-    border: none;
-    outline: none;
-    cursor: pointer;
-    font-size: 4rem;
-    margin-left: 1rem;
+.replyForm textarea {
+  resize: none;
+  width: 85%;
+}
+
+.sendBtn {
+  background-color: transparent;
+  color: var(--color-primary);
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-size: 4rem;
+  margin-left: 1rem;
 }

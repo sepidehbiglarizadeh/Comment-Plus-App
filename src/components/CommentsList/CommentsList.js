@@ -53,7 +53,7 @@ const Commentslist = () => {
       renderValue = <p style={{ margin: "0 auto" }}>Fetching Data Failed</p>;
     }
 
-    if (comments && !error) {
+    if (comments.length && !error) {
       renderValue = rootComments.map((comment) => {
         return (
           <Comment
